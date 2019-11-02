@@ -8,7 +8,9 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>copper.jpg</itemPath>
       <itemPath>led_off.png</itemPath>
+      <itemPath>led_on.png</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
@@ -54,7 +56,11 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="copper.jpg" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="led_off.png" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="led_on.png" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
         <cTool>
@@ -82,7 +88,11 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="copper.jpg" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="led_off.png" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="led_on.png" ex="false" tool="3" flavor2="0">
       </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
