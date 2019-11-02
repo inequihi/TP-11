@@ -10,13 +10,12 @@
     <logicalFolder name="ResourceFiles"
                    displayName="Resource Files"
                    projectFiles="true">
+      <itemPath>led_off.png</itemPath>
     </logicalFolder>
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>main.c</itemPath>
-      <itemPath>puertos.c</itemPath>
-      <itemPath>simulacion.c</itemPath>
     </logicalFolder>
     <logicalFolder name="TestFiles"
                    displayName="Test Files"
@@ -57,13 +56,11 @@
           </linkerLibItems>
         </linkerTool>
       </compileType>
+      <item path="led_off.png" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="puertos.c" ex="false" tool="0" flavor2="0">
-      </item>
       <item path="puertos.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="simulacion.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="simulacion.h" ex="false" tool="3" flavor2="0">
       </item>
@@ -88,13 +85,11 @@
           <developmentMode>5</developmentMode>
         </asmTool>
       </compileType>
+      <item path="led_off.png" ex="false" tool="3" flavor2="0">
+      </item>
       <item path="main.c" ex="false" tool="0" flavor2="0">
       </item>
-      <item path="puertos.c" ex="false" tool="0" flavor2="0">
-      </item>
       <item path="puertos.h" ex="false" tool="3" flavor2="0">
-      </item>
-      <item path="simulacion.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="simulacion.h" ex="false" tool="3" flavor2="0">
       </item>
