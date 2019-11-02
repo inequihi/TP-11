@@ -6,7 +6,9 @@
 int main(int argc, char** argv) {
 
     ALLEGRO_DISPLAY *display = NULL;
-    ALLEGRO_BITMAP *image = NULL;
+    ALLEGRO_BITMAP *led_off = NULL;
+    ALLEGRO_BITMAP *led_on = NULL;
+    ALLEGRO_BITMAP *background = NULL;
     ALLEGRO_EVENT_QUEUE *event_queue = NULL;
 
     if (!al_init()) {
@@ -24,32 +26,49 @@ int main(int argc, char** argv) {
         return -1;
     }
 
-    image = al_load_bitmap("led_off.png");
-    if (!image) {
+    led_off = al_load_bitmap("led_off.png");
+    if (!led_off) {
         fprintf(stderr, "failed to load image !\n");
-        return 0;
+        return -1;
+    }
+    
+    led_on = al_load_bitmap("led_on.png");
+    if (!led_on) {
+        fprintf(stderr, "failed to load image !\n");
+        return -1;
+    }
+    
+    background = al_load_bitmap("copper.jpg");
+    if (!background) {
+        fprintf(stderr, "failed to load background!\n");
+        return -1;
     }
 
-    display = al_create_display(200*8, 200);
+    display = al_create_display(500, 100);
     if (!display) {
-        al_destroy_bitmap(image);
+        al_destroy_bitmap(led_off);
+        al_destroy_bitmap(background);
         fprintf(stderr, "failed to create display!\n");
         return -1;
     }
     
-    al_flip_display();
+    
+    al_draw_bitmap(background,0 , 0, 0); 
     
     int i;
     for (i=0;i<8;i++){
-	static int x = 150;
-	al_draw_bitmap(image, x, 150, 0); 
-	x+=150;
+	static int x = 15;
+	al_draw_bitmap(led_off, x, 25, 0);
+	x+=60;
 	}
+    
+    al_flip_display();
    
     event_queue = al_create_event_queue();
     if(!event_queue) {
       fprintf(stderr, "failed to create an event queue!\n");
       al_destroy_display(display);
+      al_destroy_bitmap(background);
       return -1;
    }
 
@@ -92,7 +111,7 @@ int main(int argc, char** argv) {
     
 
     al_destroy_display(display);
-    al_destroy_bitmap(image);
+    al_destroy_bitmap(led_off);
     al_shutdown_image_addon(); 
     al_destroy_event_queue(event_queue);
 
