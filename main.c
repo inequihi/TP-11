@@ -3,7 +3,7 @@
 #include <allegro5/allegro.h> 
 #include <allegro5/allegro_image.h>
 
-int main(void) {
+int main(int argc, char** argv) {
 
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_BITMAP *image = NULL;
@@ -13,7 +13,12 @@ int main(void) {
         fprintf(stderr, "failed to initialize allegro!\n");
         return -1;
     }
-
+    
+    if (!al_install_keyboard()) {
+        fprintf(stderr, "failed to initialize the keyboard!\n");
+        return -1;
+    }
+    
     if (!al_init_image_addon()) { 
         fprintf(stderr, "failed to initialize image addon!\n");
         return -1;
@@ -40,17 +45,17 @@ int main(void) {
 	al_draw_bitmap(image, x, 150, 0); 
 	x+=150;
 	}
-     
+   
     event_queue = al_create_event_queue();
-     
-    if (event_queue = NULL) {
-        fprintf(stderr, "failed to create event_queue!\n");
-        return -1;
-    }
+    if(!event_queue) {
+      fprintf(stderr, "failed to create an event queue!\n");
+      al_destroy_display(display);
+      return -1;
+   }
 
-     al_register_event_source(event_queue, al_get_keyboard_event_source());
+    al_register_event_source(event_queue, al_get_keyboard_event_source());
     
-    bool done;
+    bool done = false;
     
     while(!done){
         ALLEGRO_EVENT events;
