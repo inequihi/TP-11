@@ -5,9 +5,7 @@
 #include <allegro5/allegro_audio.h> 
 #include <allegro5/allegro_acodec.h> 
 
-    void turn_led_on(ALLEGRO_BITMAP * led_on, int location);
-
-    void turn_led_off(ALLEGRO_BITMAP * led_off, int location);
+    void turn_led(ALLEGRO_BITMAP * led_image, int location, ALLEGRO_SAMPLE *sample, bool is_on[8], int led_number);
 
     void initialize_leds(ALLEGRO_BITMAP * background, ALLEGRO_BITMAP * led_off);
     
@@ -124,6 +122,7 @@ int main(int argc, char** argv) {
     
     bool done = false;
     bool is_on[8] = {};
+    int for_loop_index;
     
     while(!done){
         ALLEGRO_EVENT events;
@@ -131,40 +130,101 @@ int main(int argc, char** argv) {
         if(events.type= ALLEGRO_EVENT_KEY_DOWN){
             switch(events.keyboard.keycode){
                 case ALLEGRO_KEY_B:
-                    al_clear_to_color(al_map_rgb(50,0,49));
-                    al_flip_display();
+                    
                     break;
-                case ALLEGRO_KEY_1:
+                case  ALLEGRO_KEY_C:
+                    for(for_loop_index=0;for_loop_index<8;for_loop_index++){
+                        turn_led(led_off,location[for_loop_index], sample, is_on, for_loop_index);
+                    }
+                    break;
+                case  ALLEGRO_KEY_S:
+                    for(for_loop_index=0;for_loop_index<8;for_loop_index++){
+                        turn_led(led_on,location[for_loop_index], sample, is_on, for_loop_index);
+                    }
+                    break;
+                case  ALLEGRO_KEY_T:
+                    for(for_loop_index=0;for_loop_index<8;for_loop_index++){
+                        if (is_on[for_loop_index] == false) {
+                            turn_led(led_on,location[for_loop_index], sample, is_on, for_loop_index);
+                        }
+                        else {
+                            turn_led(led_off,location[for_loop_index], sample, is_on, for_loop_index);
+                        }
+                    }
+                    break;
+                    
+                case ALLEGRO_KEY_0:
                     if (is_on[0] == true) {
-                        turn_led_off(led_off,location[0]);
-                        al_flip_display();
-                        turn_led_off(led_off,location[0]);
-                        is_on[0]=false;
+                        turn_led(led_off,location[0], sample, is_on, 0);
                     }
                     else {
-                        turn_led_on(led_on,location[0]);
-                        al_flip_display();
-                        turn_led_on(led_on,location[0]);
-                        is_on[0]=true;
+                        turn_led(led_on,location[0], sample, is_on, 0);
                     }
-                    make_sound(sample);
+                    break;
+                case ALLEGRO_KEY_1:
+                    if (is_on[1] == true) {
+                        turn_led(led_off,location[1], sample, is_on, 1);
+                    }
+                    else {
+                        turn_led(led_on,location[1], sample, is_on, 1);
+                    }
                     break;
                 case ALLEGRO_KEY_2:
-                    al_clear_to_color(al_map_rgb(250,250,250));
-                    al_flip_display();
-                    break;
+                    if (is_on[2] == true) {
+                        turn_led(led_off,location[2], sample, is_on, 2);
+                    }
+                    else {
+                        turn_led(led_on,location[2], sample, is_on, 2);
+                    }
+                    break; 
                 case ALLEGRO_KEY_3:
-                    al_clear_to_color(al_map_rgb(0,0,0));
-                    al_flip_display();
+                    if (is_on[3] == true) {
+                        turn_led(led_off,location[3], sample, is_on, 3);
+                    }
+                    else {
+                        turn_led(led_on,location[3], sample, is_on, 3);
+                    }
                     break;
-                case ALLEGRO_KEY_ESCAPE:
+                case ALLEGRO_KEY_4:
+                    if (is_on[4] == true) {
+                        turn_led(led_off,location[4], sample, is_on, 4);
+                    }
+                    else {
+                        turn_led(led_on,location[4], sample, is_on, 4);
+                    }
+                    break;
+                case ALLEGRO_KEY_5:
+                    if (is_on[5] == true) {
+                        turn_led(led_off,location[5], sample, is_on, 5);
+                    }
+                    else {
+                        turn_led(led_on,location[5], sample, is_on, 5);
+                    }
+                    break;
+                case ALLEGRO_KEY_6:
+                    if (is_on[6] == true) {
+                        turn_led(led_off,location[6], sample, is_on, 6);
+                    }
+                    else {
+                        turn_led(led_on,location[6], sample, is_on, 6);
+                    }
+                    break;
+                case ALLEGRO_KEY_7:
+                    if (is_on[7] == true) {
+                        turn_led(led_off,location[7], sample, is_on, 7);
+                    }
+                    else {
+                        turn_led(led_on,location[7], sample, is_on, 7);
+                    }
+                    break;
+                case ALLEGRO_KEY_Q:
                     done = true;
                     break;
                 default:
-                    fprintf(stderr, "coso\n");
+                    fprintf(stderr, "Crash\n");
             }
         }  
-        if (events.type == ALLEGRO_EVENT_DISPLAY_CLOSE){
+        if (events.type == ALLEGRO_EVENT_DISPLAY_CLOSE){ //Esto seria para que se cierre la ventana pero no esta funcando
             done = true;
         }  
     }
@@ -179,12 +239,17 @@ int main(int argc, char** argv) {
 }
 
 
-    void turn_led_on(ALLEGRO_BITMAP * led_on, int location) {
-        al_draw_bitmap(led_on, location, 25, 0);
-    }
-
-    void turn_led_off(ALLEGRO_BITMAP * led_off, int location) {
-        al_draw_bitmap(led_off, location, 25, 0);
+    void turn_led(ALLEGRO_BITMAP * led_image, int location, ALLEGRO_SAMPLE *sample, bool is_on[8], int led_number) {
+        al_draw_bitmap(led_image, location, 25, 0);
+        al_flip_display();
+        make_sound(sample);
+        al_draw_bitmap(led_image, location, 25, 0);
+        if (is_on[led_number]==true){
+            is_on[led_number]=false;
+        }
+        else if (is_on[led_number]==false){
+            is_on[led_number]=true;
+        }
     }
 
     void initialize_leds(ALLEGRO_BITMAP * background, ALLEGRO_BITMAP * led_off){
@@ -194,14 +259,14 @@ int main(int argc, char** argv) {
     int i;
     for (i=0;i<8;i++){
 	static int x = 15;
-        turn_led_off(led_off, x);
+        al_draw_bitmap(led_off, x, 25, 0);
 	x+=60;
-	}
+	} 
     al_flip_display();
     al_draw_bitmap(background,0 , 0, 0); 
     for (i=0;i<8;i++){
 	static int x = 15;
-        turn_led_off(led_off, x);
+        al_draw_bitmap(led_off, x, 25, 0);
 	x+=60;
 	}
     }
