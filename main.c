@@ -11,6 +11,8 @@
     
     void turn_all_leds (ALLEGRO_BITMAP * led_image, ALLEGRO_SAMPLE *sample, bool is_on[8]);
     
+    void key_b_func (ALLEGRO_BITMAP * led_image, ALLEGRO_SAMPLE *sample, bool was_on[8]);
+    
     static int location[8] = {15,75,135,195,255,315,375,435};
     
     void make_sound (ALLEGRO_SAMPLE *sample);
@@ -121,27 +123,36 @@ int main(int argc, char** argv) {
    }
 
     al_register_event_source(event_queue, al_get_keyboard_event_source());
+    al_register_event_source(event_queue, al_get_display_event_source(display));
     
     bool done = false;
     bool is_on[8] = {};
-    bool bkey;
-    int for_loop_index;
+    bool was_on[8] = {};
+    
+    int index;
     
     while(!done){
         ALLEGRO_EVENT events;
         al_wait_for_event(event_queue, &events);
-        if(events.type= ALLEGRO_EVENT_KEY_DOWN){
+        if(events.type== ALLEGRO_EVENT_KEY_DOWN){
             switch(events.keyboard.keycode){
                 case ALLEGRO_KEY_B:
-                    al_drop_next_event(event_queue);
-                    al_drop_next_event(event_queue);
-                    fprintf(stderr, "Hola");
-                    /*al_flush_event_queue(event_queue);
+                    
+                    for(index=0;index<8;index++){
+                        was_on[index]=is_on[index];
+                    }
+                    
+                    while (events.type== ALLEGRO_EVENT_KEY_DOWN && events.keyboard.keycode == ALLEGRO_KEY_B) {
+                        al_get_next_event(event_queue, &events);
+                    }
                     al_wait_for_event(event_queue, &events);
-                    if (events.keyboard.keycode==ALLEGRO_KEY_D){
-                        fprintf(stderr, "Hola");
-                    }*/
-                   
+                    while (events.type!= ALLEGRO_EVENT_KEY_DOWN || events.keyboard.keycode != ALLEGRO_KEY_B) {
+                        key_b_func(led_off, sample, was_on);
+                        al_rest(0.5);
+                        key_b_func(led_on, sample, was_on);
+                        al_rest(0.5);
+                            al_get_next_event(event_queue, &events);
+                    }
                     break;
                 case  ALLEGRO_KEY_C:
                     turn_all_leds(led_off, sample, is_on);
@@ -150,12 +161,12 @@ int main(int argc, char** argv) {
                     turn_all_leds(led_on, sample, is_on);
                     break;
                 case  ALLEGRO_KEY_T:
-                    for(for_loop_index=0;for_loop_index<8;for_loop_index++){
-                        if (is_on[for_loop_index] == false) {
-                            turn_led(led_on,location[for_loop_index], sample, is_on, for_loop_index);
+                    for(index=0;index<8;index++){
+                        if (is_on[index] == false) {
+                            turn_led(led_on,location[index], sample, is_on, index);
                         }
                         else {
-                            turn_led(led_off,location[for_loop_index], sample, is_on, for_loop_index);
+                            turn_led(led_off,location[index], sample, is_on, index);
                         }
                     }
                     break;
@@ -273,6 +284,18 @@ int main(int argc, char** argv) {
         }
         make_sound(sample);
         al_flip_display();
+    }
+    
+    void key_b_func (ALLEGRO_BITMAP * led_image, ALLEGRO_SAMPLE *sample, bool was_on[8]) {
+    int led_number;
+    for(led_number=0;led_number<8;led_number++){
+        if(was_on[led_number]==true){
+            al_draw_bitmap(led_image, location[led_number], 25, 0);
+            al_draw_bitmap(led_image, location[led_number], 25, 0);
+        }
+    }
+    make_sound(sample);
+    al_flip_display();
     }
 
     void initialize_leds(ALLEGRO_BITMAP * background, ALLEGRO_BITMAP * led_off){
