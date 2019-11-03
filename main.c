@@ -9,6 +9,8 @@
 
     void initialize_leds(ALLEGRO_BITMAP * background, ALLEGRO_BITMAP * led_off);
     
+    void turn_all_leds (ALLEGRO_BITMAP * led_image, ALLEGRO_SAMPLE *sample, bool is_on[8]);
+    
     static int location[8] = {15,75,135,195,255,315,375,435};
     
     void make_sound (ALLEGRO_SAMPLE *sample);
@@ -122,6 +124,7 @@ int main(int argc, char** argv) {
     
     bool done = false;
     bool is_on[8] = {};
+    bool bkey;
     int for_loop_index;
     
     while(!done){
@@ -130,17 +133,21 @@ int main(int argc, char** argv) {
         if(events.type= ALLEGRO_EVENT_KEY_DOWN){
             switch(events.keyboard.keycode){
                 case ALLEGRO_KEY_B:
-                    
+                    al_drop_next_event(event_queue);
+                    al_drop_next_event(event_queue);
+                    fprintf(stderr, "Hola");
+                    /*al_flush_event_queue(event_queue);
+                    al_wait_for_event(event_queue, &events);
+                    if (events.keyboard.keycode==ALLEGRO_KEY_D){
+                        fprintf(stderr, "Hola");
+                    }*/
+                   
                     break;
                 case  ALLEGRO_KEY_C:
-                    for(for_loop_index=0;for_loop_index<8;for_loop_index++){
-                        turn_led(led_off,location[for_loop_index], sample, is_on, for_loop_index);
-                    }
+                    turn_all_leds(led_off, sample, is_on);
                     break;
                 case  ALLEGRO_KEY_S:
-                    for(for_loop_index=0;for_loop_index<8;for_loop_index++){
-                        turn_led(led_on,location[for_loop_index], sample, is_on, for_loop_index);
-                    }
+                    turn_all_leds(led_on, sample, is_on);
                     break;
                 case  ALLEGRO_KEY_T:
                     for(for_loop_index=0;for_loop_index<8;for_loop_index++){
@@ -250,6 +257,22 @@ int main(int argc, char** argv) {
         else if (is_on[led_number]==false){
             is_on[led_number]=true;
         }
+    }
+    
+    void turn_all_leds (ALLEGRO_BITMAP * led_image, ALLEGRO_SAMPLE *sample, bool is_on[8]) {
+        int led_number;
+        for(led_number=0;led_number<8;led_number++){
+            al_draw_bitmap(led_image, location[led_number], 25, 0);
+            al_draw_bitmap(led_image, location[led_number], 25, 0);
+            if (is_on[led_number]==true){
+                is_on[led_number]=false;
+            }
+            else if (is_on[led_number]==false){
+                is_on[led_number]=true;
+            }
+        }
+        make_sound(sample);
+        al_flip_display();
     }
 
     void initialize_leds(ALLEGRO_BITMAP * background, ALLEGRO_BITMAP * led_off){
